@@ -48,6 +48,10 @@ bot.on('message', (msg) => {
     if (chatId == admin && msg.reply_to_message) { // если сообщение пришло от админа и это ответ на сообщение
         if (msg.voice) { // если пришло голосовое сообщение
             bot.sendVoice(msg.reply_to_message.forward_from.id, msg.voice.file_id);
+        } else if (msg.photo) { // если пришло фото
+            bot.sendPhoto(msg.reply_to_message.forward_from.id, msg.photo[0].file_id);
+        } else if (msg.document) { // если пришел документ
+            bot.sendDocument(msg.reply_to_message.forward_from.id, msg.document.file_id);
         } else { // если не голосовое сообщение, отправляем текстовый ответ
             bot.sendMessage(msg.reply_to_message.forward_from.id, msg.text);
         }
@@ -56,6 +60,7 @@ bot.on('message', (msg) => {
         bot.forwardMessage(admin, chatId, msg.message_id);
     }
 });
+
 
 bot.on('polling_error', (error) => {
     console.log(error);
